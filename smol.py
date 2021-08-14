@@ -1,5 +1,6 @@
 #! /usr/bin/env python3
 import struct
+import re
 
 f = open('enwik9l')
 
@@ -7,7 +8,7 @@ data = f.read(65536)
 dictionary = [" "]
 while data != '':
     data = f.read(65536)
-    words = data.split(" ")
+    words = re.split('([\s.,;()]+)', data)
     for item in words:
         try:
             dictionary.index(item)
