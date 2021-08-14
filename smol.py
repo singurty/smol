@@ -35,7 +35,7 @@ for i in range(len(dictionary)):
         df.write(struct.pack('<I', 0))
 df.close()
 
-cf = open('result', 'wb')
+cf = open('smolled', 'wb')
 f.seek(0)
 data = f.read(65536)
 while data != '':
@@ -43,7 +43,6 @@ while data != '':
     words = re.split('([\s.,;()]+)', data)
     for item in words:
         index = dictionary.index(item)
-        print("found word at {}".format(index))
         if short:
             cf.write(struct.pack('<H', index))
         else:
