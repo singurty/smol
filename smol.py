@@ -18,16 +18,20 @@ print("built {} words dictionary".format(len(dictionary)))
 
 df = open('dict', 'wb')
 short = True
+"""
+structure of the dictionary looks like:
+are the indices short? +
+length of the word +
+the word
+"""
 if len(dictionary) > 65537:
     short = False
-    df.write(struct.pack('<?', True))
+    df.write(struct.pack('<?', short))
 else:
-    df.write(struct.pack('<?', False))
+    df.write(struct.pack('<?', short))
 for i in range(len(dictionary)):
-    if short:
-        df.write(struct.pack('<H', i))
-    else:
-        df.write(struct.pack('<I', i))
+    # assume that the length of word will fit into a short
+    df.write(struct.pack('<H', len(dictionary[i].encode())))
     df.write(struct.pack(str(len(dictionary[i].encode())) + "s", dictionary[i].encode()))
     if short:
         df.write(struct.pack('<H', 0))
@@ -47,3 +51,4 @@ while data != '':
             cf.write(struct.pack('<H', index))
         else:
             cf.write(struct.pack('<I', index))
+cf.close()
