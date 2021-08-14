@@ -5,7 +5,7 @@ import re
 f = open('enwik9l')
 
 data = f.read(65536)
-dictionary = [" "]
+dictionary = []
 while data != '':
     data = f.read(65536)
     words = re.split('([\s.,;()]+)', data)
@@ -15,7 +15,6 @@ while data != '':
         except ValueError:
             dictionary.append(item)
 print("built {} words dictionary".format(len(dictionary)))
-f.close()
 
 df = open('dict', 'wb')
 short = True
@@ -35,3 +34,17 @@ for i in range(len(dictionary)):
     else:
         df.write(struct.pack('<I', 0))
 df.close()
+
+cf = open('result', 'wb')
+f.seek(0)
+data = f.read(65536)
+while data != '':
+    data = f.read(65536)
+    words = re.split('([\s.,;()]+)', data)
+    for item in words:
+        index = dictionary.index(item)
+        print("found word at {}".format(index))
+        if short:
+            cf.write(struct.pack('<H', index))
+        else:
+            cf.write(struct.pack('<I', index))
