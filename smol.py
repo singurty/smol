@@ -20,7 +20,6 @@ df = open('dict', 'wb')
 short = True
 """
 structure of the dictionary looks like:
-are the indices short? +
 length of the word +
 the word
 """
