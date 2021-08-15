@@ -32,13 +32,19 @@ index
 cf = open('smolled', 'rb')
 xf = open('xed', 'w')
 data = cf.read(65536)
+j = 0
 while len(data) != 0:
     i = 0
+    print('read {} bytes'.format(len(data)))
     while i < len(data):
+#        print('starting at {}'.format(i))
         index = struct.unpack('<H', data[i:i+2])[0]
         i += 2
         word = dictionary[index]
+#        print('found word {}'.format(word))
         xf.write(word)
+        j += 1
     data = cf.read(65536)
+print('extracted {} words'.format(j))
 cf.close()
 xf.close()

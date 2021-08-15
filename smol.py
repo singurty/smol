@@ -42,9 +42,9 @@ cf = open('smolled', 'wb')
 f.seek(0)
 data = f.read(65536)
 while data != '':
-    data = f.read(65536)
     words = re.split('([\s.,;()]+)', data)
     for item in words:
         index = dictionary.index(item)
         cf.write(struct.pack('<H', index))
+    data = f.read(65536)
 cf.close()
