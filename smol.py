@@ -1,41 +1,37 @@
-#! /usr/bin/env python3
+#!/usr/bin/env python3
 import struct
 import re
 
 f = open('enwik9l')
 
-data = f.read(65536)
 dictionary = []
+data = f.read(65536)
+i = 0
 while data != '':
-    data = f.read(65536)
     words = re.split('([\s.,;()]+)', data)
     for item in words:
+        i += 1
         try:
             dictionary.index(item)
         except ValueError:
             dictionary.append(item)
+    data = f.read(65536)
+print('found {} words'.format(i))
 print("built {} words dictionary".format(len(dictionary)))
 
 df = open('dict', 'wb')
-short = True
 """
 structure of the dictionary looks like:
 length of the word +
 the word
 """
-if len(dictionary) > 65537:
-    short = False
-    df.write(struct.pack('<?', short))
-else:
-    df.write(struct.pack('<?', short))
-for i in range(len(dictionary)):
+i = 0
+for word in dictionary:
     # assume that the length of word will fit into a short
-    df.write(struct.pack('<H', len(dictionary[i].encode())))
-    df.write(struct.pack(str(len(dictionary[i].encode())) + "s", dictionary[i].encode()))
-    if short:
-        df.write(struct.pack('<H', 0))
-    else:
-        df.write(struct.pack('<I', 0))
+    df.write(struct.pack('<H', len(word.encode())))
+    df.write(struct.pack(str(len(word.encode())) + "s", dictionary[i].encode()))
+    i += 1
+print('wrote {} entries'.format(i))
 df.close()
 
 cf = open('smolled', 'wb')
@@ -46,8 +42,5 @@ while data != '':
     words = re.split('([\s.,;()]+)', data)
     for item in words:
         index = dictionary.index(item)
-        if short:
-            cf.write(struct.pack('<H', index))
-        else:
-            cf.write(struct.pack('<I', index))
+        cf.write(struct.pack('<H', index))
 cf.close()
