@@ -34,6 +34,10 @@ for word in dictionary:
 print('wrote {} entries'.format(i))
 df.close()
 
+"""
+structure of smolled looks like:
+index
+"""
 cf = open('smolled', 'wb')
 f.seek(0)
 data = f.read(65536)

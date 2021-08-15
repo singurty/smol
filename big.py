@@ -24,3 +24,21 @@ while len(data) != 0:
 df.close()
 #print(dictionary)
 print('found {} words'.format(len(dictionary)))
+
+"""
+structure of smolled looks like:
+index
+"""
+cf = open('smolled', 'rb')
+xf = open('xed', 'w')
+data = cf.read(65536)
+while len(data) != 0:
+    i = 0
+    while i < len(data):
+        index = struct.unpack('<H', data[i:i+2])[0]
+        i += 2
+        word = dictionary[index]
+        xf.write(word)
+    data = cf.read(65536)
+cf.close()
+xf.close()
