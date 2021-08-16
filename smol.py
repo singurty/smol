@@ -5,6 +5,7 @@ import re
 f = open('enwik9l')
 
 dictionary = []
+repetitions = {}
 data = f.read(65536)
 i = 0
 while data != '':
@@ -12,7 +13,14 @@ while data != '':
     for item in words:
         i += 1
         try:
-            dictionary.index(item)
+            index = dictionary.index(item)
+            try:
+                try;
+                    repeat = repetitions[index]
+                    repeat += 1
+                except KeyError:
+                    repeat = 1
+                repetitions[index] = repeat
         except ValueError:
             dictionary.append(item)
     data = f.read(65536)
